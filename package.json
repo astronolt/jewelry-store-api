@@ -1,0 +1,51 @@
+{
+  "name": "jewelry_store_backend",
+  "version": "0.1.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "watch": "tsc-watch --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+    "test": "ENV=test && npx tsc && db-migrate --env test up && jasmine && db-migrate --env test down",
+    "tpescript-watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+    "tsc": "tsc",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "prettier": "npx prettier --config .prettierrc \"src/**/*.ts\" --write",
+    "prettier-lint": "npm run prettier && npm run lint"
+  },
+  "author": "Udacity",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
+    "dotenv": "^16.0.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.8.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/jasmine": "^4.3.1",
+    "@types/node": "^18.11.18",    
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.13",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/pg": "^7.14.7",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jasmine": "^4.5.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.3",
+    "supertest": "^6.3.3",
+    "tsc-watch": "^6.0.0",
+    "typescript": "^4.9.4"
+  }
+}

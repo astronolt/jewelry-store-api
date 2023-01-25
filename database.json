@@ -1,0 +1,17 @@
+{
+   "dev": {
+     "driver": "pg",
+     "host": "127.0.0.1",
+     "database": "jewelry_store_dev",
+     "user": "jeweller",
+     "password": "blingbling"
+   },
+   "test": {
+     "driver": "pg",
+     "host": "127.0.0.1",
+     "database": "jewelry_store_test",
+     "user": "jeweller",
+     "password": "blingbling"
+   },
+   "sql-file" : true
+ }
