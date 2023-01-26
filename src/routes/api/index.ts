@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express'
-
 import { productsHandler } from '../../handlers/products'
 import { usersHandler } from '../../handlers/users'
 import { ordersHandler } from '../../handlers/orders'

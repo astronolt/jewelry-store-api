@@ -1,4 +1,4 @@
-CREATE TABLE jewelry_products (
+CREATE TABLE products (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(50),
 	description VARCHAR(250),

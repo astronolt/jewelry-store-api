@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express'
-import { logger, bodyParser, cors } from './middleware'
+import { logger, bodyParser } from './middleware'
 import { APIroutes } from './routes/api'
 
 const app = express()
 const port = 3000
 
-const APIMiddleware = [bodyParser, logger, cors, APIroutes]
+const APIMiddleware = [bodyParser, logger, APIroutes]
 
 
 app.use('/api', APIMiddleware, (req: Request, res: Response) => {    
