@@ -10,12 +10,12 @@ export type Product = {
     stock: number
 }
 
-export class JewelryProducts {
+export class Products {
     async index(): Promise<Product[]> {
         try {
                         
             const conn = await client.connect()
-            const sql = 'SELECT * FROM jewelry_products'
+            const sql = 'SELECT * FROM products'
             const result = await conn.query(sql)
             conn.release()
 
@@ -28,7 +28,7 @@ export class JewelryProducts {
     async show(id: string): Promise<Product> {
         try {
             const conn = await client.connect()
-            const sql = 'SELECT * FROM jewelry_products WHERE id=($1)'
+            const sql = 'SELECT * FROM products WHERE id=($1)'
             const result = await conn.query(sql, [id])
             conn.release()
 
@@ -42,7 +42,7 @@ export class JewelryProducts {
         try {
             const conn = await client.connect()
             const sql =
-                'INSERT INTO jewelry_products (name, description, type, material, price, stock) VALUES($1, $2, $3, $4, $5, $6) RETURNING *'
+                'INSERT INTO products (name, description, type, material, price, stock) VALUES($1, $2, $3, $4, $5, $6) RETURNING *'
             const result = await conn.query(sql, [
                 product.name,
                 product.description,
@@ -64,7 +64,7 @@ export class JewelryProducts {
     async delete(id: string): Promise<Product> {
         try {
             const conn = await client.connect()
-            const sql = 'DELETE FROM jewelry_products WHERE id=($1)'
+            const sql = 'DELETE FROM products WHERE id=($1)'
             const result = await conn.query(sql, [id])
             conn.release()
 

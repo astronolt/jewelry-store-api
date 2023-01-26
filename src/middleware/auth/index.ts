@@ -13,19 +13,20 @@ const {
 
 export const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
    try {
-      const authorizationHeader = (req.headers.authorizations as string);
+      const authorizationHeader = (req.headers.authorization as string);
       if(!authorizationHeader){
          return res.status(401)
             .send({ auth: false, message: 'No token provided.' })
          ;
-      }
-      const token = authorizationHeader.split(' ')[1]
+      }      
+      const token = authorizationHeader.split(' ')[1];
       const decoded = jwt.verify(token, TOKEN_SECRET as jwt.Secret)
+      
 
       next()
    } catch (error) {
       return res.status(401)
-         .send({ auth: false, message: 'Failed to authenticate token.' });
+         .send({ auth: false, message: 'Failed to authenticate token. ' + error });
    }
 }
 

@@ -1,19 +1,19 @@
 import express, { Request, Response } from 'express'
 import { verifyAuthToken } from '../middleware'
-import { JewelryProducts, Product } from '../models/products'
+import { Products, Product } from '../models/products'
 
 
 
-const product = new JewelryProducts();
+const productModel = new Products();
 
 const index = async (req: Request, res: Response) => {
-    const productList = await product.index()
+    const productList = await productModel.index()
     res.send('this is the INDEX route')
     res.json(productList)
 }
 
 const show = async (req: Request, res: Response) => {
-    const productItem = await product.show(req.params.id)
+    const productItem = await productModel.show(req.params.id)
     res.json(productItem)
 }
 
@@ -29,13 +29,13 @@ const create = async (req: Request, res: Response) => {
         stock: req.body.material,
     }
     
-    const productsCreate = await product.create(productItem)    
+    const productsCreate = await productModel.create(productItem)    
     res.json(productsCreate)
 }
 
 
 const destroy = async (req: Request, res: Response) => {
-    const productDelete = await product.delete(req.body.id)
+    const productDelete = await productModel.delete(req.body.id)
 }
 
 
@@ -44,7 +44,6 @@ export const productsHandler = (routes: express.Router) => {
     routes.get('/products', index);
     routes.get('/products/:id', show);
     routes.post('/products/create', verifyAuthToken, create);
-    //routes.delete('/products/:id', destroy);
 }
 
 /*

@@ -1,8 +1,8 @@
-import { JewelryProducts, Product } from '../products';
+import { Products, Product } from '../products';
 
-const product = new JewelryProducts();
+const product = new Products();
 
-xdescribe("Jewelry Store Methods", () => {
+describe("Jewelry Store Methods", () => {
 
    const MODELDUMMY = {
       name: "Solitaire Diamond Ring",

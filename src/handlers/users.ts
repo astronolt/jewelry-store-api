@@ -10,24 +10,21 @@ const UsersModel = new Users();
 const index = async (req: Request, res: Response) => {
 
    try {
-      console.log(req.body);
       const user: User = {
          username: req.body.username,
          password: req.body.password,
       }
-      const userId = await UsersModel.index(user.username, user.password)
+      const userId = await UsersModel.index(user.username, user.password as string)
       const SignedToken = signAuthToken({ user: userId });
 
       res
          .status(200)
-         .set('Authorization', SignedToken)
-         .send({ auth: true, token: SignedToken })
+         .set('Authorization', `Bearer ${SignedToken}`)
+         .json({ auth: true, token: SignedToken })
    } catch (err) {
-      console.log(err);
       res
          .status(401)
-         .send({ auth: false, message: "authentication failed" })
-         ;
+         .json({ auth: false, message: "authentication failed" })
 
    }
 }
@@ -37,12 +34,12 @@ const show = async (req: Request, res: Response) => {
 
    try {
       const userShow = await UsersModel.show(req.params.id)
-      res.send('this is the Show route')
+      res.status(200)
       res.json(userShow)
    } catch (err) {
+      console.log(err);
       res.status(401)
       res.json(err)
-      console.log(err);
    }
 }
 
@@ -50,26 +47,29 @@ const show = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
 
    try {
-      console.log(req.body);
       const user: User = {
          username: req.body.username,
          password: req.body.password,
+         firstname: req.body.firstname ?? "",
+         lastname: req.body.lastname ?? "",
       }
-      const userCreate = await UsersModel.create(user)
-      console.log(userCreate);
 
-      const token = signAuthToken({ user: userCreate });
+      console.log(user);
+      
+      const userCreate = await UsersModel.create(user);
+      const SignedToken = signAuthToken({ user: userCreate });
+
       res
-         .set('Authorization', token)
          .status(200)
-         .json({ auth: true, token: token})
-      ;
+         .set('Authorization', `Bearer ${SignedToken}`)
+         .json({ auth: true, message: `Welcome ${user.firstname}, your account has been created.`, data: userCreate, token: SignedToken })
+         ;
 
    } catch (err) {
       res
          .status(401)
-         .json({ auths: false, message: 'couldnt create user' })
-      ;
+         .json({ auth: false, message: 'couldnt create user' })
+         ;
    }
 }
 
