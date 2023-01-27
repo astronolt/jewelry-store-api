@@ -16,6 +16,19 @@ export type User = {
    password: string
 }
 
+
+
+/*
+#### Orders
+- id
+- id of each product in the order
+- quantity of each product in the order
+- user_id
+- status of order (active or complete)
+*/
+
+
+
 export class Users {
 
    async create(user: User): Promise<User> {

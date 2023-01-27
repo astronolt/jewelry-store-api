@@ -11,6 +11,7 @@ export type Product = {
 }
 
 export class Products {
+
     async index(): Promise<Product[]> {
         try {
                         
@@ -25,6 +26,7 @@ export class Products {
         }
     }
 
+
     async show(id: string): Promise<Product> {
         try {
             const conn = await client.connect()
@@ -37,6 +39,7 @@ export class Products {
             throw new Error(`Could not find jewelry with id: ${id}. Error ${error}`)
         }
     }
+    
 
     async create(product: Product): Promise<Product> {
         try {
@@ -58,19 +61,6 @@ export class Products {
             throw new Error(
                 `Could not add new jewelry ${product.name}. Error ${error}`
             )
-        }
-    }
-
-    async delete(id: string): Promise<Product> {
-        try {
-            const conn = await client.connect()
-            const sql = 'DELETE FROM products WHERE id=($1)'
-            const result = await conn.query(sql, [id])
-            conn.release()
-
-            return result.rows[0]
-        } catch (error) {
-            throw new Error(`Could not delete jewelry product ${id}. Error ${error}`)
         }
     }
 }

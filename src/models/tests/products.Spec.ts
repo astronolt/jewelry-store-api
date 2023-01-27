@@ -1,36 +1,34 @@
 import { Products, Product } from '../products';
+import { MODELDUMMY } from './dummy/products';
 
 const product = new Products();
 
-describe("Jewelry Store Methods", () => {
+const MODELDUMMIES = Object.keys(MODELDUMMY).map(key => MODELDUMMY[key]);
 
-   const MODELDUMMY = {
-      name: "Solitaire Diamond Ring",
-      description: "A classic and timeless solitaire diamond ring set in 14k white gold",
-      type: "ring",
-      material: "14k white gold, diamond",
-      price: 1999,
-      stock: 5
-   };
-
-
-   it("should have an index method", () => {
-      expect(product.index).toBeDefined()
-   });
-
+describe("Product Models", () => {
 
    //create
    it("should have a create method", () => {
       expect(product.create).toBeDefined()
    });
 
-   it('create method should add a book', async () => {
-      const result = await product.create(MODELDUMMY);
-      expect(result).toEqual({
-         id: "1",
-         ...MODELDUMMY
-      });
+   it('create method should add a product', async () => {
+      for (const key in MODELDUMMY) {         
+         const result = await product.create(MODELDUMMY[key]);
+         expect(result).toEqual(MODELDUMMY[key]);
+      }
    });
+
+
+   //Index
+   it("should have an index method", () => {
+      expect(product.index).toBeDefined()
+   });
+   it('index method should show the products', async () => {
+      const result = await product.index();
+      expect(result).toEqual(MODELDUMMIES);
+   });
+
 
 
    //Show
@@ -38,17 +36,11 @@ describe("Jewelry Store Methods", () => {
       expect(product.show).toBeDefined()
    });
 
-   it('index method should return a list of books', async () => {
+   it('index method should return a product', async () => {
       const result = await product.show("1");
-      expect(result).toEqual({
-         id: "1",
-         ...MODELDUMMY
-      });
+      expect(result).toEqual(MODELDUMMIES[0]);
    });
 
 
-   it("should have a delete method", () => {
-      expect(product.delete).toBeDefined()
-   });
 
 });

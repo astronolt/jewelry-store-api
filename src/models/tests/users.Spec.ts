@@ -45,7 +45,7 @@ describe("User Models", () => {
       expect(userModel.show).toBeDefined()
    });
 
-   it('index method should return a list of books', async () => {
+   it('index method should return a user profile', async () => {
       const result = await userModel.show("1");      
       expect(result).toEqual({
          username: 'username', firstname: 'John', lastname: 'Doe'

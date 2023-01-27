@@ -7,35 +7,51 @@ import { Products, Product } from '../models/products'
 const productModel = new Products();
 
 const index = async (req: Request, res: Response) => {
-    const productList = await productModel.index()
-    res.send('this is the INDEX route')
-    res.json(productList)
+    try {
+        const productList = await productModel.index()
+        res
+            .status(200)
+            .json(productList)
+    } catch (error) {
+        res
+            .status(401)
+            .json(error)
+    }
 }
 
 const show = async (req: Request, res: Response) => {
-    const productItem = await productModel.show(req.params.id)
-    res.json(productItem)
+    try {
+        const productItem = await productModel.show(req.params.id)
+        res
+            .status(200)
+            .json(productItem)
+    } catch (error) {
+        res
+            .status(401)
+            .json(error)
+    }
 }
 
 
 const create = async (req: Request, res: Response) => {
-
-    const productItem: Product = {
-        name: req.body.name,
-        description: req.body.description,
-        type: req.body.type,
-        material: req.body.material,
-        price: req.body.material,
-        stock: req.body.material,
+    try {
+        const productItem: Product = {
+            name: req.body.name,
+            description: req.body.description,
+            type: req.body.type,
+            material: req.body.material,
+            price: req.body.material,
+            stock: req.body.material,
+        }
+        const productsCreate = await productModel.create(productItem)
+        res
+            .status(200)
+            .json(productsCreate)
+    } catch (error) {
+        res
+            .status(401)
+            .json(error)
     }
-    
-    const productsCreate = await productModel.create(productItem)    
-    res.json(productsCreate)
-}
-
-
-const destroy = async (req: Request, res: Response) => {
-    const productDelete = await productModel.delete(req.body.id)
 }
 
 
@@ -50,6 +66,4 @@ export const productsHandler = (routes: express.Router) => {
 - Index 
 - Show
 - Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
 */

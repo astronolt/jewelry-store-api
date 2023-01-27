@@ -36,10 +36,10 @@ const show = async (req: Request, res: Response) => {
       const userShow = await UsersModel.show(req.params.id)
       res.status(200)
       res.json(userShow)
-   } catch (err) {
-      console.log(err);
+   } catch (error) {
+      console.log(error);
       res.status(401)
-      res.json(err)
+      res.json(error)
    }
 }
 
@@ -53,8 +53,6 @@ const create = async (req: Request, res: Response) => {
          firstname: req.body.firstname ?? "",
          lastname: req.body.lastname ?? "",
       }
-
-      console.log(user);
       
       const userCreate = await UsersModel.create(user);
       const SignedToken = signAuthToken({ user: userCreate });
