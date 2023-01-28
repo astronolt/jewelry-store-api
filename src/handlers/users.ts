@@ -6,7 +6,6 @@ import { Users, User } from '../models/users'
 const UsersModel = new Users();
 
 
-
 const index = async (req: Request, res: Response) => {
 
    try {
@@ -82,9 +81,3 @@ export const usersHandler = (routes: express.Router) => {
    routes.get('/users/:id', verifyAuthToken, show); //profile
    routes.post('/users/create', create); //create
 }
-
-/*
-- Index [token required]
-- Show [token required]
-- Create [token required]
-*/

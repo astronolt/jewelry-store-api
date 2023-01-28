@@ -85,22 +85,4 @@ export class Products {
             throw new Error(`Could not delete jewelry with id: ${id}. Error ${error}`)
         }
     }
-
-    async resetTable() {
-        try {
-            const conn = await client.connect()
-            const sql = 'TRUNCATE TABLE products RESTART IDENTITY'
-            const result = await conn.query(sql)
-            console.log('table truncated');
-
-            conn.release()
-
-            return true
-            
-        } catch (error) {
-            console.log(error);
-            
-            throw new Error(`Could not truncate table. Error ${error}`)
-        }
-    }
 }

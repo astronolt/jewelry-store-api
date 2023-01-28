@@ -39,8 +39,9 @@ describe('Product Endpoint Responses', () => {
 
    //Truncate recreate table
    afterAll(async () => {
+      const tableName = 'products';
       const response = await request
-         .post(`${productsRoute}/adv/reset-table`)
+         .get(`${productsRoute}/adv/reset-table/${tableName}`)
          .set('Authorization', `Bearer ${currentToken}`)
    });
 

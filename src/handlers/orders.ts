@@ -1,39 +1,25 @@
 import express, { Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
-import { Users, User } from '../models/users'
-
-//ENV
-import dotenv from 'dotenv'
-dotenv.config()
-const {
-   TOKEN_SECRET
-} = process.env
+import { verifyAuthToken } from '../middleware'
+import { Orders, Order } from '../models/orders'
 
 
+const OrdersModel = new Orders();
 
-const UsersModel = new Users();
 
-const index = async (req: Request, res: Response) => {
-
-   console.log(req.body);
+const byUser = async (req: Request, res: Response) => {
 
    try {
-
-      const user: User = {
-         username: req.body.username,
-         password: req.body.password,
-      }
-      const newUser = await UsersModel.create(user)
-      const token = jwt.sign({ user: newUser }, (TOKEN_SECRET as jwt.Secret))
-      res.json(token)
-
-   } catch (err) {
+      const userOrder = await OrdersModel.byUser(req.query.user_id as string)
+      res.status(200)
+      res.json(userOrder)
+   } catch (error) {
       res.status(401)
-      res.json(err)
-      console.log(err);
+      res.json(error)
    }
 }
 
+
+
 export const ordersHandler = (routes: express.Router) => {
-   routes.get('/orders', index);
+   routes.get('/orders', verifyAuthToken ,byUser);
 }

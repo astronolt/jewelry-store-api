@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express'
 import { verifyAuthToken } from '../middleware'
 import { Products, Product } from '../models/products'
-
+import { SharedModel } from '../models/shared'
 
 
 const productModel = new Products();
+const sharedModel = new SharedModel();
+
 
 const index = async (req: Request, res: Response) => {
     try {
@@ -72,11 +74,13 @@ const destroy = async (req: Request, res: Response) => {
 
 
 const resetTable = async (req: Request, res: Response) => {
+    console.log(req.params.table);
+    
     try {
-        const productItem = await productModel.resetTable()
+        const tableReset = await sharedModel.resetTable(req.params.table)
         res
             .status(200)
-            .json(productItem)
+            .json(tableReset)
     } catch (error) {
         res
             .status(401)
@@ -89,8 +93,8 @@ export const productsHandler = (routes: express.Router) => {
     routes.get('/products', index);
     routes.get('/products/:id', show);
     routes.post('/products/create', verifyAuthToken, create);
-    routes.post('/products/delete/:id', verifyAuthToken, destroy);
-    routes.post('/products/adv/reset-table', verifyAuthToken, resetTable);
+    routes.get('/products/delete/:id', verifyAuthToken, destroy);
+    routes.get('/products/adv/reset-table/:table', verifyAuthToken, resetTable);
 }
 
 /*
