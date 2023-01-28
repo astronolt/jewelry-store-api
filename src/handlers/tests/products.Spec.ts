@@ -1,6 +1,9 @@
 import supertest from 'supertest'
 import app from '../../server'
 import { Product } from '../../models/products'
+import { signAuthToken } from '../../middleware';
+import { PRODUCTDUMMY } from '../../models/tests/dummy/products';
+import { USERDUMMY } from '../../models/tests/dummy/users';
 
 const request = supertest(app)
 
@@ -9,33 +12,36 @@ const productsRoute = '/api/products';
 const loginRoute = '/api/users';
 
 
-const productData: Product = {
-   id: 1,
-   name: "Solitaire Diamond Ring",
-   description: "A classic and timeless solitaire diamond ring set in 14k white gold",
-   type: "ring",
-   material: "14k white gold, diamond",
-   price: 1999,
-   stock: 5
-}
+const productData: Product = Object.keys(PRODUCTDUMMY).map(key => PRODUCTDUMMY[key])[0]
+
+
 
 let currentToken: string;
 
 
 describe('Product Endpoint Responses', () => {
 
-
+   //user authentication
    beforeAll(async () => {
+
+      //create user
+      const createResponse = await request
+         .get(`${loginRoute}/create`)
+         .send(USERDUMMY)
+
+      //login user
       const loginResponse = await request
-         .get(loginRoute)
-         .send({
-            username: "username",
-            password: "password",
-         })
+         .get(`${loginRoute}`)
+         .send(USERDUMMY)
 
-      currentToken = loginResponse.body.token;
-      console.log(currentToken);
+      currentToken = signAuthToken({});
+   });
 
+   //Truncate recreate table
+   afterAll(async () => {
+      const response = await request
+         .post(`${productsRoute}/adv/reset-table`)
+         .set('Authorization', `Bearer ${currentToken}`)
    });
 
 
@@ -43,16 +49,7 @@ describe('Product Endpoint Responses', () => {
       const response = await request
          .post(`${productsRoute}/create`)
          .set('Authorization', `Bearer ${currentToken}`)
-         .send({
-            name: productData.name,
-            description: productData.description,
-            type: productData.type,
-            material: productData.material,
-            price: productData.price,
-            stock: productData.stock,
-         })
-
-         ;
+         .send(productData)
 
       expect(response.status).toBe(200)
    })
@@ -72,5 +69,6 @@ describe('Product Endpoint Responses', () => {
          .set('Authorization', `Bearer ${currentToken}`)
       expect(response.status).toBe(200)
    })
+
 
 })

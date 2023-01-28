@@ -14,6 +14,13 @@ const index = async (req: Request, res: Response) => {
          username: req.body.username,
          password: req.body.password,
       }
+
+      if(!user.username || !user.password || (user.password as string).length < 4){
+         res
+         .status(401)
+         .json({ auth: false, message: "check your user credentials, and try again" })         
+      }
+
       const userId = await UsersModel.index(user.username, user.password as string)
       const SignedToken = signAuthToken({ user: userId });
 
@@ -37,7 +44,6 @@ const show = async (req: Request, res: Response) => {
       res.status(200)
       res.json(userShow)
    } catch (error) {
-      console.log(error);
       res.status(401)
       res.json(error)
    }
@@ -61,13 +67,12 @@ const create = async (req: Request, res: Response) => {
          .status(200)
          .set('Authorization', `Bearer ${SignedToken}`)
          .json({ auth: true, message: `Welcome ${user.firstname}, your account has been created.`, data: userCreate, token: SignedToken })
-         ;
+      
 
    } catch (err) {
       res
          .status(401)
          .json({ auth: false, message: 'couldnt create user' })
-         ;
    }
 }
 

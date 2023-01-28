@@ -1,11 +1,12 @@
 import { Products, Product } from '../products';
-import { MODELDUMMY } from './dummy/products';
+import { PRODUCTDUMMY } from './dummy/products';
 
 const product = new Products();
 
-const MODELDUMMIES = Object.keys(MODELDUMMY).map(key => MODELDUMMY[key]);
+const MODELDUMMIES = Object.keys(PRODUCTDUMMY).map(key => PRODUCTDUMMY[key]);
 
 describe("Product Models", () => {
+
 
    //create
    it("should have a create method", () => {
@@ -13,9 +14,9 @@ describe("Product Models", () => {
    });
 
    it('create method should add a product', async () => {
-      for (const key in MODELDUMMY) {         
-         const result = await product.create(MODELDUMMY[key]);
-         expect(result).toEqual(MODELDUMMY[key]);
+      for (const key in PRODUCTDUMMY) {         
+         const result = await product.create(PRODUCTDUMMY[key]);
+         expect(result).toEqual(PRODUCTDUMMY[key]);
       }
    });
 
@@ -30,7 +31,6 @@ describe("Product Models", () => {
    });
 
 
-
    //Show
    it("should have a show method", () => {
       expect(product.show).toBeDefined()
@@ -40,7 +40,4 @@ describe("Product Models", () => {
       const result = await product.show("1");
       expect(result).toEqual(MODELDUMMIES[0]);
    });
-
-
-
 });

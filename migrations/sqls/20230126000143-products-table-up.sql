@@ -5,5 +5,6 @@ CREATE TABLE products (
 	type VARCHAR(50),
 	material VARCHAR(50),
 	price integer,
+	category VARCHAR(70),
 	stock integer
 );
