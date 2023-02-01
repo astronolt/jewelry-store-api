@@ -1,75 +1,62 @@
 import supertest from 'supertest'
 import app from '../../server'
 import { Product } from '../../models/products'
-import { signAuthToken } from '../../middleware';
-import { PRODUCTDUMMY } from '../../models/tests/dummy/products';
-import { USERDUMMY } from '../../models/tests/dummy/users';
+import { signAuthToken } from '../../middleware'
+import { PRODUCTDUMMY } from '../../models/tests/dummy/products'
+import { USERDUMMY } from '../../models/tests/dummy/users'
 
 const request = supertest(app)
 
+const productsRoute = '/api/products'
+const usersRoute = '/api/users'
+const loginRoute = '/api/users'
 
-const productsRoute = '/api/products';
-const loginRoute = '/api/users';
+const productData: Product = Object.keys(PRODUCTDUMMY).map(
+    (key) => PRODUCTDUMMY[key]
+)[0]
 
-
-const productData: Product = Object.keys(PRODUCTDUMMY).map(key => PRODUCTDUMMY[key])[0]
-
-
-
-let currentToken: string;
-
+let currentToken: string
 
 describe('Product Endpoint Responses', () => {
+    //user authentication
+    beforeAll(async () => {
+        //create user
+        await request.post(`${usersRoute}/adv/create-dummy`)
 
-   //user authentication
-   beforeAll(async () => {
+        //login user
+        await request.get(`${loginRoute}`).send(USERDUMMY[0])
 
-      //create user
-      const createResponse = await request
-         .get(`${loginRoute}/create`)
-         .send(USERDUMMY)
+        currentToken = signAuthToken({})
+    })
 
-      //login user
-      const loginResponse = await request
-         .get(`${loginRoute}`)
-         .send(USERDUMMY)
+    //Truncate recreate table
+    afterAll(async () => {
+        let tableName = 'products'
+        await request.post(`${productsRoute}/adv/reset-table/${tableName}`)
 
-      currentToken = signAuthToken({});
-   });
+        tableName = 'users'
+        await request.post(`${usersRoute}/adv/reset-table/${tableName}`)
+    })
 
-   //Truncate recreate table
-   afterAll(async () => {
-      const tableName = 'products';
-      const response = await request
-         .get(`${productsRoute}/adv/reset-table/${tableName}`)
-         .set('Authorization', `Bearer ${currentToken}`)
-   });
+    it('Checks PRODUCTS/CREATE handler', async () => {
+        const response = await request
+            .post(`${productsRoute}/create`)
+            .set('Authorization', `Bearer ${currentToken}`)
+            .send(productData)
 
+        expect(response.status).toBe(200)
+    })
 
-   it('Checks PRODUCTS/CREATE handler', async () => {
-      const response = await request
-         .post(`${productsRoute}/create`)
-         .set('Authorization', `Bearer ${currentToken}`)
-         .send(productData)
+    it('Checks PRODUCTS/INDEX handler', async () => {
+        const loginResponse = await request.get(`${productsRoute}`)
+        expect(loginResponse.status).toBe(200)
+    })
 
-      expect(response.status).toBe(200)
-   })
-
-
-   it('Checks PRODUCTS/INDEX handler', async () => {
-      const loginResponse = await request
-         .get(`${productsRoute}`)
-      expect(loginResponse.status).toBe(200)
-   })
-
-
-   it('Checks PRODUCTS/SHOW:ID handler', async () => {
-      const productId = 1;
-      const response = await request
-         .get(`${productsRoute}/${productId}`)
-         .set('Authorization', `Bearer ${currentToken}`)
-      expect(response.status).toBe(200)
-   })
-
-
+    it('Checks PRODUCTS/SHOW:ID handler', async () => {
+        const productId = 1
+        const response = await request
+            .get(`${productsRoute}/${productId}`)
+            .set('Authorization', `Bearer ${currentToken}`)
+        expect(response.status).toBe(200)
+    })
 })

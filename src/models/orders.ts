@@ -1,26 +1,63 @@
 import client from '../database/index'
+import { ORDERDUMMY } from '../models/tests/dummy/orders'
 
 export type Order = {
-   id?: number | string
-   user_id: string
-   quantity: number
-   status: string
+    id?: number
+    user_id: number
+    quantity: number
+    status: string
 }
 
 export class Orders {
+    async create(order: Order): Promise<Order> {
+        try {
+            const conn = await client.connect()
+            const sql =
+                'INSERT INTO orders (user_id, quantity, status) VALUES ($1, $2, $3) RETURNING user_id, quantity, status'
+            const result = await conn.query(sql, [
+                order.user_id,
+                order.quantity,
+                order.status,
+            ])
+            conn.release()
 
-   async byUser(username: string): Promise<Order[]> {
-      try {
+            return result.rows[0]
+        } catch (error) {
+            console.log(error)
 
-         const conn = await client.connect()
-         const sql = `SELECT name, description, type, material, price, category, stock FROM orders WHERE user_id = ${username}`
-         const result = await conn.query(sql)
-         conn.release()
+            throw new Error(
+                `Could not add new jewelry order for user: ${order.user_id}. Error ${error}`
+            )
+        }
+    }
 
-         return result.rows
-      } catch (error) {
-         throw new Error(`could not get jewelry collection. Error ${error}`)
-      }
-   }
+    async byUser(user_id: number): Promise<Order[]> {
+        try {
+            const conn = await client.connect()
+            const sql = `SELECT user_id, quantity, status FROM orders WHERE user_id = '${user_id}'`
+            const result = await conn.query(sql)
+            conn.release()
 
+            return result.rows
+        } catch (error) {
+            console.log(error)
+
+            throw new Error(`could not get jewelry collection. Error ${error}`)
+        }
+    }
+
+    async createDummy(): Promise<Order> {
+        try {
+            let result
+            for (const key in ORDERDUMMY) {
+                result = await this.create(ORDERDUMMY[key])
+            }
+
+            return result as Order
+        } catch (error) {
+            console.log(error)
+
+            throw new Error(`could not create dummies ${error}`)
+        }
+    }
 }

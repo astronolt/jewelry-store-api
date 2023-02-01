@@ -9,10 +9,10 @@ routes.get('/', (req: Request, res: Response): void => {
     res.send('Jewelry Store API route')
 })
 
-productsHandler(routes);
+productsHandler(routes)
 
-usersHandler(routes);
+usersHandler(routes)
 
-ordersHandler(routes);
+ordersHandler(routes)
 
 export { routes as APIroutes }
