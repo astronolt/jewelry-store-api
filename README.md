@@ -2,13 +2,9 @@
 Welcome to the Jewelry Store Backend project! This is a Node and Express based API that provides all the necessary endpoints to support a frontend.
 
 <br>
-<br>
 
 # Introduction
 The Jewelry Store Backend project includes features such as authentication, data validation, error handling, and search functionality. The backend can handle the storage, retrieval, and modification of product information, ensuring that the information is secure, accurate, and accessible. The project has been implemented with best practices for code scalability, maintainability, and security.
-
-<br>
-<br>
 
 ### Technologies Used
 
