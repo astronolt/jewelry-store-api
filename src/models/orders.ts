@@ -4,6 +4,7 @@ import { ORDERDUMMY } from '../models/tests/dummy/orders'
 export type Order = {
     id?: number
     user_id: number
+    product_id: number
     quantity: number
     status: string
 }
@@ -13,9 +14,10 @@ export class Orders {
         try {
             const conn = await client.connect()
             const sql =
-                'INSERT INTO orders (user_id, quantity, status) VALUES ($1, $2, $3) RETURNING user_id, quantity, status'
+                'INSERT INTO orders (user_id, product_id, quantity, status) VALUES ($1, $2, $3, $4) RETURNING user_id, product_id, quantity, status'
             const result = await conn.query(sql, [
                 order.user_id,
+                order.product_id,
                 order.quantity,
                 order.status,
             ])
@@ -34,7 +36,7 @@ export class Orders {
     async byUser(user_id: number): Promise<Order[]> {
         try {
             const conn = await client.connect()
-            const sql = `SELECT user_id, quantity, status FROM orders WHERE user_id = '${user_id}'`
+            const sql = `SELECT user_id, product_id, quantity, status FROM orders WHERE user_id = '${user_id}'`
             const result = await conn.query(sql)
             conn.release()
 

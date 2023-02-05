@@ -9,6 +9,10 @@ const sharedModel = new SharedModel()
 const index = async (req: Request, res: Response) => {
     try {
         const productList = await productModel.index()
+        if (!productList[0]) {
+            res.status(200).json({ message: 'empty product list' })
+            return
+        }
         res.status(200).json(productList)
     } catch (error) {
         res.status(401).json(error)

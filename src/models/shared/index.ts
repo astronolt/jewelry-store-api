@@ -6,7 +6,6 @@ export class SharedModel {
             const conn = await client.connect()
             const sql = `TRUNCATE TABLE ${tableName} RESTART IDENTITY CASCADE`
             const result = await conn.query(sql)
-            console.log('table truncated')
 
             conn.release()
 

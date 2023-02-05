@@ -8,6 +8,10 @@ const UsersModel = new Users()
 const sharedModel = new SharedModel()
 
 const index = async (req: Request, res: Response) => {
+    res.send('You are logged in!')
+}
+
+const indexPost = async (req: Request, res: Response) => {
     try {
         const user: User = {
             username: req.body.username,
@@ -117,7 +121,8 @@ const resetTable = async (req: Request, res: Response) => {
 }
 
 export const usersHandler = (routes: express.Router) => {
-    routes.post('/users/', index) //login
+    routes.get('/users/', verifyAuthToken, index)
+    routes.post('/users/', indexPost) //login
     routes.get('/users/:id', verifyAuthToken, show) //profile
     routes.post('/users/create', create) //create
 
