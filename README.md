@@ -16,7 +16,6 @@ The Jewelry Store Backend project includes features such as authentication, data
 - jasmine for testing
 
 <br>
-<br>
 
 ## Installation
 ```
@@ -24,10 +23,7 @@ $ npm install
 $ npm run build
 $ npm start
 ```
-Note:
-- example of .env file ``.env.example`` in root directory
-
-<br>
+Note: example of .env file ``.env.example`` in root directory
 
 ### Testing
 ```
@@ -39,7 +35,6 @@ $ npm test
 
 
 ## How to use
-***
 To use this project, visit the end points:
 `(http://localhost:3000/api)`
 <br>
