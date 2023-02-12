@@ -32,7 +32,6 @@ const create = async (req: Request, res: Response) => {
     try {
         const orderItem: Order = {
             user_id: req.body.user_id,
-            product_id: req.body.product_id,
             quantity: req.body.quantity,
             status: req.body.status,
         }
@@ -40,6 +39,20 @@ const create = async (req: Request, res: Response) => {
         res.status(200).json(productsCreate)
     } catch (error) {
         res.status(401).json(error)
+    }
+}
+
+const addProduct = async (req: Request, res: Response) => {
+    const orderId: string = req.params.id
+    const productId: string = req.body.productId
+    const quantity: number = parseInt(req.body.quantity)
+
+    try {
+        const addedProduct = await orderModel.addProduct(quantity, orderId, productId)
+        res.json(addedProduct)
+    } catch (err) {
+        res.status(400)
+        res.json(err)
     }
 }
 
@@ -57,6 +70,9 @@ const resetTable = async (req: Request, res: Response) => {
 export const ordersHandler = (routes: express.Router) => {
     routes.get('/orders', verifyAuthToken, byUser)
     routes.post('/orders/create', verifyAuthToken, create)
+
+    // add product
+    routes.post('/orders/:id/products', addProduct)
 
     routes.post('/orders/adv/create-dummy', createDummy)
     routes.post('/orders/adv/reset-table/:table', resetTable)
