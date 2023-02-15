@@ -1,5 +1,5 @@
 import client from '../database/index'
-import { ORDERDUMMY } from '../models/tests/dummy/orders'
+import { ORDERDUMMY, ORDERPRODUCTDUMMY } from '../models/tests/dummy/orders'
 
 
 export type Order = {
@@ -17,16 +17,16 @@ export type OrderProducts = {
 
 
 export class Orders {
+    
     async create(order: Order): Promise<Order> {
         try {
             const conn = await client
                 .connect()
             const sql =
-                'INSERT INTO orders (user_id, quantity, status) VALUES ($1, $2, $3) RETURNING user_id, quantity, status'
+                'INSERT INTO orders (user_id, status) VALUES ($1, $2) RETURNING user_id, status'
             const result = await conn
                 .query(sql, [
                     order.user_id,
-                    order.quantity,
                     order.status,
                 ])
             conn.release()
@@ -42,7 +42,7 @@ export class Orders {
     }
 
 
-    async addProduct(quantity: number, orderId: string, productId: string): Promise<Order> {
+    async addProduct(quantity: number, orderId: number, productId: number): Promise<Order> {
         // get order to see if it is open
         try {
             const ordersql = 'SELECT * FROM orders WHERE id=($1)'
@@ -80,7 +80,7 @@ export class Orders {
     }
 
 
-    async byUser(user_id: number): Promise<Order[]> {
+    async userOrder(user_id: number): Promise<Order[]> {
         try {
             const conn = await client.connect()
             const sql = `SELECT user_id, quantity, status FROM orders WHERE user_id = '${user_id}'`
@@ -100,6 +100,25 @@ export class Orders {
             let result
             for (const key in ORDERDUMMY) {
                 result = await this.create(ORDERDUMMY[key])
+            }
+
+            return result as Order
+        } catch (error) {
+            console.log(error)
+
+            throw new Error(`could not create dummies ${error}`)
+        }
+    }
+
+    async orderProductsDummy(): Promise<Order> {
+        try {
+            let result
+            for (const key in ORDERPRODUCTDUMMY) {
+                result = await this.addProduct(
+                    ORDERPRODUCTDUMMY[key].quantity,
+                    ORDERPRODUCTDUMMY[key].order_id,
+                    ORDERPRODUCTDUMMY[key].product_id,
+                )
             }
 
             return result as Order

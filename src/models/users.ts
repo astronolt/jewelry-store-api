@@ -14,6 +14,7 @@ export type User = {
 }
 
 export class Users {
+    
     async index(username: string, password: string): Promise<User | boolean> {
         try {
             const conn = await client.connect()

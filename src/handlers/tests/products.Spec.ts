@@ -1,9 +1,12 @@
 import supertest from 'supertest'
 import app from '../../server'
-import { Product } from '../../models/products'
 import { signAuthToken } from '../../middleware'
+
+import { Product } from '../../models/products'
+import { createUserDummy, loginUserDummy, destroyDummies } from '../../models/tests/headers'
 import { PRODUCTDUMMY } from '../../models/tests/dummy/products'
 import { USERDUMMY } from '../../models/tests/dummy/users'
+
 
 const request = supertest(app)
 
@@ -18,24 +21,15 @@ const productData: Product = Object.keys(PRODUCTDUMMY).map(
 let currentToken: string
 
 describe('Product Endpoint Responses', () => {
+    
     //user authentication
     beforeAll(async () => {
-        //create user
-        await request.post(`${usersRoute}/adv/create-dummy`)
-
-        //login user
-        await request.get(`${loginRoute}`).send(USERDUMMY[0])
-
-        currentToken = signAuthToken({})
+        createUserDummy()
+        currentToken = await loginUserDummy()
     })
 
-    //Truncate recreate table
     afterAll(async () => {
-        let tableName = 'products'
-        await request.post(`${productsRoute}/adv/reset-table/${tableName}`)
-
-        tableName = 'users'
-        await request.post(`${usersRoute}/adv/reset-table/${tableName}`)
+        await destroyDummies();
     })
 
     it('Checks PRODUCTS/CREATE handler', async () => {

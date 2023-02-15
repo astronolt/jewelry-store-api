@@ -1,17 +1,21 @@
 import express, { Request, Response } from 'express'
 import { signAuthToken, verifyAuthToken } from '../middleware'
 import { Users, User } from '../models/users'
-import { USERDUMMY } from '../models/tests/dummy/users'
+import { Orders, Order } from '../models/orders'
 import { SharedModel } from '../models/shared'
+import { USERDUMMY } from '../models/tests/dummy/users'
 
-const UsersModel = new Users()
+const usersModel = new Users()
+const orderModel = new Orders()
 const sharedModel = new SharedModel()
+
+
 
 const index = async (req: Request, res: Response) => {
     res.send('You are logged in!')
 }
 
-const indexPost = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
     try {
         const user: User = {
             username: req.body.username,
@@ -32,7 +36,7 @@ const indexPost = async (req: Request, res: Response) => {
             return
         }
 
-        const userId = await UsersModel.index(
+        const userId = await usersModel.index(
             user.username,
             user.password as string
         )
@@ -48,7 +52,7 @@ const indexPost = async (req: Request, res: Response) => {
 
 const show = async (req: Request, res: Response) => {
     try {
-        const userShow = await UsersModel.show(req.params.id)
+        const userShow = await usersModel.show(req.params.id)
         res.status(200)
         res.json(userShow)
     } catch (error) {
@@ -81,7 +85,7 @@ const create = async (req: Request, res: Response) => {
             return
         }
 
-        const userCreate = await UsersModel.create(user)
+        const userCreate = await usersModel.create(user)
         const SignedToken = signAuthToken({ user: userCreate })
 
         res.status(200)
@@ -97,11 +101,25 @@ const create = async (req: Request, res: Response) => {
     }
 }
 
+/* Current Order by user (args: user id) */
+const userOrder = async (req: Request, res: Response) => {
+    try {
+        const userOrder = await orderModel.userOrder(
+            parseInt(req.body.user_id as string)
+        )
+        res.status(200)
+        res.json(userOrder)
+    } catch (error) {
+        res.status(401)
+        res.json(error)
+    }
+}
+
 const createDummy = async (req: Request, res: Response) => {
     try {
         let result
         for (const key in USERDUMMY) {
-            result = await UsersModel.create(USERDUMMY[key])
+            result = await usersModel.create(USERDUMMY[key])
         }
         res.status(200).json(result)
     } catch (error) {
@@ -110,8 +128,6 @@ const createDummy = async (req: Request, res: Response) => {
 }
 
 const resetTable = async (req: Request, res: Response) => {
-    console.log(req.params.table)
-
     try {
         const tableReset = await sharedModel.resetTable(req.params.table)
         res.status(200).json(tableReset)
@@ -121,10 +137,13 @@ const resetTable = async (req: Request, res: Response) => {
 }
 
 export const usersHandler = (routes: express.Router) => {
-    routes.get('/users/', verifyAuthToken, index)
-    routes.post('/users/', indexPost) //login
-    routes.get('/users/:id', verifyAuthToken, show) //profile
+    routes.get('/users/', verifyAuthToken, index) //user home
+    routes.post('/users/', login) //login
     routes.post('/users/create', create) //create
+    routes.get('/users/:id', verifyAuthToken, show) //profile
+
+    //Current Order by user
+    routes.post('/users/:id/orders/', verifyAuthToken, userOrder)
 
     routes.post('/users/adv/create-dummy', createDummy)
     routes.post('/users/adv/reset-table/:table', resetTable)

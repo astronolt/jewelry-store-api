@@ -65,8 +65,6 @@ const destroy = async (req: Request, res: Response) => {
 }
 
 const resetTable = async (req: Request, res: Response) => {
-    console.log(req.params.table)
-
     try {
         const tableReset = await sharedModel.resetTable(req.params.table)
         res.status(200).json(tableReset)

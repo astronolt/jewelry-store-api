@@ -4,5 +4,4 @@ CREATE TABLE orders (
 	quantity integer,
 	status VARCHAR(50),
 	created_at TIMESTAMP DEFAULT NOW()
-	/*product_id integer NOT NULL REFERENCES products(id),*/
 );

@@ -1,20 +1,15 @@
-import supertest from 'supertest'
-import app from '../../server'
-
-import { Users } from '../users'
+import { Users } from '../../models/users'
 import { USERDUMMY } from '../../models/tests/dummy/users'
+import { destroyDummies } from '../../models/tests/headers'
 
-const request = supertest(app)
 
 const userModel = new Users()
-const usersRoute = '/api/users'
 const userData = Object.keys(USERDUMMY).map((key) => USERDUMMY[key])[0]
 
 describe('User Models', () => {
-    //Truncate recreate table
+    
     afterAll(async () => {
-        const tableName = 'users'
-        await request.post(`${usersRoute}/adv/reset-table/${tableName}`)
+        await destroyDummies();
     })
 
     //create

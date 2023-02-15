@@ -1,4 +1,4 @@
-import { Order } from '../../orders'
+import { Order, OrderProducts } from '../../orders'
 
 export const ORDERDUMMY: { [key: string]: Order } = {
     ORDER1: {
@@ -13,4 +13,27 @@ export const ORDERDUMMY: { [key: string]: Order } = {
         user_id: 1,
         status: 'active',
     },
+}
+
+export const ORDERPRODUCTDUMMY: { [key: string]: OrderProducts } = {
+    ORDERPROD1: {
+        quantity: 4,
+        order_id: 1,
+        product_id: 2,
+    },
+    ORDERPROD2: {
+        quantity: 3,
+        order_id: 1,
+        product_id: 1,
+    },
+    ORDERPROD3: {
+        quantity: 5,
+        order_id: 1,
+        product_id: 4,
+    },
+    ORDERPROD4: {
+        quantity: 2,
+        order_id: 1,
+        product_id: 3,
+    }
 }
