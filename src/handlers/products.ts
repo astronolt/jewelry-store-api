@@ -39,6 +39,7 @@ const create = async (req: Request, res: Response) => {
             category: req.body.category,
             stock: req.body.stock,
         }
+        
         const productsCreate = await productModel.create(productItem)
         res.status(200).json(productsCreate)
     } catch (error) {
@@ -75,9 +76,9 @@ const resetTable = async (req: Request, res: Response) => {
 
 export const productsHandler = (routes: express.Router) => {
     routes.get('/products', index)
-    routes.get('/products/:id', show)
     routes.post('/products/create', verifyAuthToken, create)
-    routes.get('/products/delete/:id', verifyAuthToken, destroy)
+    routes.post('/products/:id', show)
+    routes.post('/products/delete/:id', verifyAuthToken, destroy)
 
     routes.post('/products/adv/create-dummy', createDummy)
     routes.post('/products/adv/reset-table/:table', resetTable)

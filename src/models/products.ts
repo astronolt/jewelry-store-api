@@ -45,7 +45,7 @@ export class Products {
         }
     }
 
-    async create(product: Product): Promise<Product> {
+    async create(product: Product): Promise<Product> {        
         try {
             const conn = await client.connect()
             const sql =
@@ -77,8 +77,7 @@ export class Products {
             const sql = 'DELETE FROM products WHERE id=($1);'
             const result = await conn.query(sql, [id])
             conn.release()
-
-            console.log('deleted')
+            
             return result.rows[0]
         } catch (error) {
             console.log(error)

@@ -1,10 +1,15 @@
 import { Users } from '../../models/users'
+import { Orders } from '../../models/orders'
 import { USERDUMMY } from '../../models/tests/dummy/users'
+import { ORDERDUMMY } from '../../models/tests/dummy/orders'
 import { destroyDummies } from '../../models/tests/headers'
 
 
 const userModel = new Users()
+const orderModel = new Orders()
+
 const userData = Object.keys(USERDUMMY).map((key) => USERDUMMY[key])[0]
+const orderData = Object.keys(ORDERDUMMY).map((key) => ORDERDUMMY[key])[0]
 
 describe('User Models', () => {
     
@@ -25,6 +30,7 @@ describe('User Models', () => {
         })
     })
 
+
     //index
     it('should have an index method', () => {
         expect(userModel.index).toBeDefined()
@@ -38,12 +44,13 @@ describe('User Models', () => {
         expect(result).toEqual(true)
     })
 
+
     //Show
     it('should have a show method', () => {
         expect(userModel.show).toBeDefined()
     })
 
-    it('index method should return a user profile', async () => {
+    it('show method should return a user profile', async () => {
         const result = await userModel.show('1')
         expect(result).toEqual({
             username: userData.username,
@@ -51,4 +58,5 @@ describe('User Models', () => {
             lastname: userData.lastname,
         })
     })
+
 })

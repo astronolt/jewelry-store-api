@@ -23,27 +23,31 @@ describe('User Handler Responses', () => {
         await destroyDummies();
     })
 
-    it('Checks create /USERS/CREATE handler', async () => {
-        const response = await request.post(`${usersRoute}/create`).send({
-            username: userData.username + "_test",
-            password: userData.password + "_test",
-            firstname: userData.firstname + "_test",
-            lastname: userData.lastname + "_test",
-        })
+    it('Checks create handler [POST] /users/create', async () => {
+        const response = await request
+            .post(`${usersRoute}/create`)
+            .send({
+                username: userData.username + "_test",
+                password: userData.password + "_test",
+                firstname: userData.firstname + "_test",
+                lastname: userData.lastname + "_test",
+            })
         expect(response.status).toBe(200)
     })
 
-    it('Checks login /USERS/ handler', async () => {
-        const loginResponse = await request.post(`${usersRoute}`).send({
-            username: userData.username,
-            password: userData.password,
-        })
+    it('Checks login handler [POST] /users/', async () => {
+        const loginResponse = await request
+            .post(`${usersRoute}`)
+            .send({
+                username: userData.username,
+                password: userData.password,
+            })
         currentToken = loginResponse.body.token
 
         expect(loginResponse.status).toBe(200)
     })
 
-    it('Checks show USERS/:ID handler', async () => {
+    it('Checks show handler [GET] /users/:id', async () => {
         const userId = 1
         const response = await request
             .get(`${usersRoute}/${userId}`)
@@ -55,7 +59,7 @@ describe('User Handler Responses', () => {
         expect(response.status).toBe(200)
     })
 
-    it('Checks userOrder USERS/:ID/ORDERS handler', async () => {
+    it('Checks userOrder handler [POST] users/:id/orders', async () => {
         const userId = 1
         const response = await request
             .post(`${usersRoute}/${userId}/orders/`)

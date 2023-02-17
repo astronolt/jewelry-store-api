@@ -1,12 +1,10 @@
 import express, { Request, Response } from 'express'
 import { signAuthToken, verifyAuthToken } from '../middleware'
 import { Users, User } from '../models/users'
-import { Orders, Order } from '../models/orders'
 import { SharedModel } from '../models/shared'
 import { USERDUMMY } from '../models/tests/dummy/users'
 
 const usersModel = new Users()
-const orderModel = new Orders()
 const sharedModel = new SharedModel()
 
 
@@ -101,19 +99,6 @@ const create = async (req: Request, res: Response) => {
     }
 }
 
-/* Current Order by user (args: user id) */
-const userOrder = async (req: Request, res: Response) => {
-    try {
-        const userOrder = await orderModel.userOrder(
-            parseInt(req.body.user_id as string)
-        )
-        res.status(200)
-        res.json(userOrder)
-    } catch (error) {
-        res.status(401)
-        res.json(error)
-    }
-}
 
 const createDummy = async (req: Request, res: Response) => {
     try {
@@ -141,9 +126,6 @@ export const usersHandler = (routes: express.Router) => {
     routes.post('/users/', login) //login
     routes.post('/users/create', create) //create
     routes.get('/users/:id', verifyAuthToken, show) //profile
-
-    //Current Order by user
-    routes.post('/users/:id/orders/', verifyAuthToken, userOrder)
 
     routes.post('/users/adv/create-dummy', createDummy)
     routes.post('/users/adv/reset-table/:table', resetTable)

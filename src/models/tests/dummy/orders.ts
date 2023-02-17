@@ -3,7 +3,7 @@ import { Order, OrderProducts } from '../../orders'
 export const ORDERDUMMY: { [key: string]: Order } = {
     ORDER1: {
         user_id: 1,
-        status: 'complete',
+        status: 'active',
     },
     ORDER2: {
         user_id: 1,

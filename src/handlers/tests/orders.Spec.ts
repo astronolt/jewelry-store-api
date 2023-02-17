@@ -15,7 +15,7 @@ const orderData = Object.keys(ORDERDUMMY).map((key) => ORDERDUMMY[key])[0]
 
 let currentToken: string
 
-describe('Orders Endpoint Responses', () => {
+describe('Orders Handler Responses', () => {
     
     beforeAll(async () => {
         const startupData = await startDummies();
@@ -27,7 +27,7 @@ describe('Orders Endpoint Responses', () => {
     })
 
 
-    it('Checks create /orders/create handler', async () => {
+    it('Checks create handler [POST] /orders/create', async () => {
         const response = await request
             .post(`${ordersRoute}/create`)
             .set('Authorization', `Bearer ${currentToken}`)

@@ -15,7 +15,8 @@ const usersRoute = '/api/users'
 const productsRoute = '/api/products'
 const ordersRoute = '/api/orders'
 
-const userData = Object.keys(USERDUMMY).map((key) => USERDUMMY[key])[0]
+const userData = Object.keys(USERDUMMY).map((key) => USERDUMMY[key])[0];
+const userId = 1;
 
 
 export const createUserDummy = (async () => {
@@ -57,27 +58,28 @@ export const createOrderDummy = (async () => {
 })
 
 
-export const createOrderProductsDummy = (async () => {
+export const createOrderProductsDummy = (async (currentToken: string = '') => {
    //create order_products
-   for (const key in ORDERPRODUCTDUMMY) {
-      await request
-         .post(`${ordersRoute}/adv/create-dummy`)
-         .send(ORDERPRODUCTDUMMY[key])
-   }
+   // for (const key in ORDERPRODUCTDUMMY) {
+   //    await request
+   //       .post(`${ordersRoute}/${userId}/products`)
+   //       .send(ORDERPRODUCTDUMMY[key])
+   //       .set('Authorization', `Bearer ${currentToken}`)
+   // }
 })
 
 
 export const startDummies = (async () => {
 
-   createUserDummy()
+   await createUserDummy()
 
    let currentToken = await loginUserDummy()
 
-   createProductDummy()
+   await createProductDummy()
    
-   createOrderDummy()
+   await createOrderDummy()
 
-   createOrderProductsDummy()  
+   await createOrderProductsDummy(currentToken)  
 
    return {
       token: currentToken

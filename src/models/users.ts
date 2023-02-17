@@ -1,9 +1,10 @@
 import dotenv from 'dotenv'
-dotenv.config()
+
 import client from '../database/index'
 import bcrypt from 'bcrypt'
 import { USERDUMMY } from '../models/tests/dummy/users'
 
+dotenv.config()
 const { PEPPER_CRYPT, SALT_ROUNDS } = process.env
 
 export type User = {

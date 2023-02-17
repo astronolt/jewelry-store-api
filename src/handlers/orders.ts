@@ -39,6 +39,19 @@ const addProduct = async (req: Request, res: Response) => {
     }
 }
 
+/* Current Order by user (args: user id) */
+const byUser = async (req: Request, res: Response) => {    
+    try {
+        const userOrder = await orderModel.byUser(
+            parseInt(req.params.id as string)
+        )
+        res.status(200)
+        res.json(userOrder)
+    } catch (error) {
+        res.status(401)
+        res.json(error)
+    }
+}
 
 const createDummy = async (req: Request, res: Response) => {
     try {
@@ -49,6 +62,7 @@ const createDummy = async (req: Request, res: Response) => {
     }
 }
 
+
 const resetTable = async (req: Request, res: Response) => {
     try {
         const tableReset = await sharedModel.resetTable(req.params.table)
@@ -58,12 +72,16 @@ const resetTable = async (req: Request, res: Response) => {
     }
 }
 
+
 /* HANDLERS */
 export const ordersHandler = (routes: express.Router) => {
     routes.post('/orders/create', verifyAuthToken, create)
 
     // add product
-    routes.post('/orders/:id/products', addProduct)
+    routes.post('/orders/:id/products', verifyAuthToken, addProduct)
+
+    //Current Order by user
+    routes.post('/orders/user/:user_id/', verifyAuthToken, byUser)
 
     routes.post('/orders/adv/create-dummy', createDummy)
     routes.post('/orders/adv/reset-table/:table', resetTable)

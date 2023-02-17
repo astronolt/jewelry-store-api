@@ -32,7 +32,7 @@ describe('Product Models', () => {
         expect(product.show).toBeDefined()
     })
 
-    it('index method should return a product', async () => {
+    it('show method should return a product', async () => {
         const result = await product.show('1')
         expect(result).toEqual(MODELDUMMIES[0])
     })

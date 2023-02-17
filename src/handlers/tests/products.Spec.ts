@@ -11,8 +11,6 @@ import { USERDUMMY } from '../../models/tests/dummy/users'
 const request = supertest(app)
 
 const productsRoute = '/api/products'
-const usersRoute = '/api/users'
-const loginRoute = '/api/users'
 
 const productData: Product = Object.keys(PRODUCTDUMMY).map(
     (key) => PRODUCTDUMMY[key]
@@ -20,11 +18,11 @@ const productData: Product = Object.keys(PRODUCTDUMMY).map(
 
 let currentToken: string
 
-describe('Product Endpoint Responses', () => {
-    
+describe('Product Handler Responses', () => {
+
     //user authentication
     beforeAll(async () => {
-        createUserDummy()
+        await createUserDummy()
         currentToken = await loginUserDummy()
     })
 
@@ -32,7 +30,7 @@ describe('Product Endpoint Responses', () => {
         await destroyDummies();
     })
 
-    it('Checks PRODUCTS/CREATE handler', async () => {
+    it('Checks create handler [POST] /products/create', async () => {        
         const response = await request
             .post(`${productsRoute}/create`)
             .set('Authorization', `Bearer ${currentToken}`)
@@ -41,15 +39,25 @@ describe('Product Endpoint Responses', () => {
         expect(response.status).toBe(200)
     })
 
-    it('Checks PRODUCTS/INDEX handler', async () => {
-        const loginResponse = await request.get(`${productsRoute}`)
+    it('Checks index handler [GET] /products/', async () => {
+        const loginResponse = await request
+            .get(`${productsRoute}`)
+
         expect(loginResponse.status).toBe(200)
     })
 
-    it('Checks PRODUCTS/SHOW:ID handler', async () => {
+    it('Checks show handler [POST] /products/:id', async () => {
         const productId = 1
         const response = await request
-            .get(`${productsRoute}/${productId}`)
+            .post(`${productsRoute}/${productId}`)
+            .set('Authorization', `Bearer ${currentToken}`)
+        expect(response.status).toBe(200)
+    })
+
+    it('Checks delete handler [POST] /products/delete/:id', async () => {
+        const productId = 1
+        const response = await request
+            .post(`${productsRoute}/delete/${productId}`)
             .set('Authorization', `Bearer ${currentToken}`)
         expect(response.status).toBe(200)
     })

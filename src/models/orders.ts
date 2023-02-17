@@ -1,5 +1,6 @@
 import client from '../database/index'
 import { ORDERDUMMY, ORDERPRODUCTDUMMY } from '../models/tests/dummy/orders'
+import { Product } from "./products";
 
 
 export type Order = {
@@ -13,6 +14,15 @@ export type OrderProducts = {
     quantity: number
     order_id: number
     product_id: number
+}
+
+export type UserOrder = {
+    id?: string
+    name: Product["name"]
+    description: Product["description"]
+    price: Product["price"]
+    quantity: OrderProducts["quantity"]
+    status: Order["status"]
 }
 
 
@@ -42,7 +52,7 @@ export class Orders {
     }
 
 
-    async addProduct(quantity: number, orderId: number, productId: number): Promise<Order> {
+    async addProduct(quantity: number, orderId: number, productId: number): Promise<OrderProducts> {
         // get order to see if it is open
         try {
             const ordersql = 'SELECT * FROM orders WHERE id=($1)'
@@ -52,7 +62,7 @@ export class Orders {
 
             const order = result.rows[0]
 
-            if (order.status !== "open") {
+            if (order.status !== "active") {
                 throw new Error(`Could not add product ${productId} to order ${orderId} because order status is ${order.status}`)
             }
 
@@ -62,7 +72,7 @@ export class Orders {
         }
 
         try {
-            const sql = 'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *'
+            const sql = 'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING quantity, order_id, product_id'
 
             const conn = await client.connect()
 
@@ -80,11 +90,16 @@ export class Orders {
     }
 
 
-    async userOrder(user_id: number): Promise<Order[]> {
+    async byUser(user_id: number): Promise<Order[]> {
         try {
             const conn = await client.connect()
-            const sql = `SELECT user_id, quantity, status FROM orders WHERE user_id = '${user_id}'`
-            const result = await conn.query(sql)
+            const sql =
+            `SELECT products.name, products.description, products.price, order_products.quantity, orders.status
+            FROM orders
+            JOIN order_products ON orders.id = order_products.order_id 
+            JOIN products ON order_products.product_id = products.id
+            WHERE orders.user_id = $1 AND orders.status = 'active'`
+            const result = await conn.query(sql, [user_id])
             conn.release()
 
             return result.rows
@@ -100,25 +115,6 @@ export class Orders {
             let result
             for (const key in ORDERDUMMY) {
                 result = await this.create(ORDERDUMMY[key])
-            }
-
-            return result as Order
-        } catch (error) {
-            console.log(error)
-
-            throw new Error(`could not create dummies ${error}`)
-        }
-    }
-
-    async orderProductsDummy(): Promise<Order> {
-        try {
-            let result
-            for (const key in ORDERPRODUCTDUMMY) {
-                result = await this.addProduct(
-                    ORDERPRODUCTDUMMY[key].quantity,
-                    ORDERPRODUCTDUMMY[key].order_id,
-                    ORDERPRODUCTDUMMY[key].product_id,
-                )
             }
 
             return result as Order
