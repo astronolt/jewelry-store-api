@@ -16,7 +16,7 @@ export type OrderProducts = {
     product_id: number
 }
 
-export type UserOrder = {
+export type OrderUser = {
     id?: string
     name: Product["name"]
     description: Product["description"]
@@ -90,7 +90,7 @@ export class Orders {
     }
 
 
-    async byUser(user_id: number): Promise<Order[]> {
+    async byUser(user_id: number): Promise<OrderUser[]> {
         try {
             const conn = await client.connect()
             const sql =

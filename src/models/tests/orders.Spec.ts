@@ -1,13 +1,12 @@
-import supertest from 'supertest'
-import app from '../../server'
-
 import { Orders } from '../orders'
 import { ORDERDUMMY, ORDERPRODUCTDUMMY } from './dummy/orders'
+import { PRODUCTDUMMY } from './dummy/products'
 import { startDummies, destroyDummies } from '../../models/tests/headers'
 
 
 const order = new Orders()
 
+const productData = Object.keys(PRODUCTDUMMY).map((key) => PRODUCTDUMMY[key])[0]
 const orderData = Object.keys(ORDERDUMMY).map((key) => ORDERDUMMY[key])[0]
 const orderProductData = Object.keys(ORDERPRODUCTDUMMY).map((key) => ORDERPRODUCTDUMMY[key])[0]
 
@@ -56,6 +55,12 @@ describe('Orders Models', () => {
     })
     it('userOrder method should show the current Order by user', async () => {
         const result = await order.byUser(1)
-        expect(result[0]).toEqual(orderData)
+        expect(result[0]).toEqual({
+            name: productData.name,
+            description: productData.description,
+            price: productData.price,
+            quantity: orderProductData.quantity,
+            status: orderData.status
+        })
     })
 })

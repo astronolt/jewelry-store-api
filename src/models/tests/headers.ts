@@ -58,14 +58,15 @@ export const createOrderDummy = (async () => {
 })
 
 
-export const createOrderProductsDummy = (async (currentToken: string = '') => {
+export const createOrderProductsDummy = (async (currentToken?: string) => {
    //create order_products
-   // for (const key in ORDERPRODUCTDUMMY) {
-   //    await request
-   //       .post(`${ordersRoute}/${userId}/products`)
-   //       .send(ORDERPRODUCTDUMMY[key])
-   //       .set('Authorization', `Bearer ${currentToken}`)
-   // }
+   for (const key in ORDERPRODUCTDUMMY) {
+      await request
+         .post(`${ordersRoute}/${userId}/products`)
+         .set('Authorization', `Bearer ${currentToken}`)
+         //.set('Authorization', `Bearer ${currentToken}`)
+         .send(ORDERPRODUCTDUMMY[key])
+   }
 })
 
 
@@ -73,13 +74,13 @@ export const startDummies = (async () => {
 
    await createUserDummy()
 
-   let currentToken = await loginUserDummy()
+   let currentToken = await loginUserDummy()   
 
    await createProductDummy()
    
    await createOrderDummy()
 
-   await createOrderProductsDummy(currentToken)  
+   await createOrderProductsDummy(currentToken)
 
    return {
       token: currentToken

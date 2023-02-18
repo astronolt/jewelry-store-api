@@ -3,8 +3,7 @@ import { Product } from '../../products'
 export const PRODUCTDUMMY: { [key: string]: Product } = {
     MODELDUMMY1: {
         name: 'Solitaire Diamond Ring',
-        description:
-            'A classic and timeless solitaire diamond ring set in 14k white gold',
+        description: 'A classic and timeless solitaire diamond ring set in 14k white gold',
         type: 'ring',
         material: '14k white gold, diamond',
         price: 1999,
@@ -13,8 +12,7 @@ export const PRODUCTDUMMY: { [key: string]: Product } = {
     },
     MODELDUMMY2: {
         name: 'Gold Hoop Earrings',
-        description:
-            'A pair of large gold hoop earrings, perfect for everyday wear',
+        description: 'A pair of large gold hoop earrings, perfect for everyday wear',
         type: 'earrings',
         material: '14k yellow gold',
         price: 299,
@@ -50,8 +48,7 @@ export const PRODUCTDUMMY: { [key: string]: Product } = {
     },
     MODELDUMMY6: {
         name: 'Diamond Stud Earrings',
-        description:
-            'A pair of round diamond stud earrings set in 14k white gold',
+        description: 'A pair of round diamond stud earrings set in 14k white gold',
         type: 'earrings',
         material: '14k white gold, diamonds',
         price: 1499,

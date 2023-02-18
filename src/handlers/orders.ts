@@ -43,11 +43,11 @@ const addProduct = async (req: Request, res: Response) => {
 const byUser = async (req: Request, res: Response) => {    
     try {
         const userOrder = await orderModel.byUser(
-            parseInt(req.params.id as string)
+            parseInt(req.params.user_id as string)
         )
         res.status(200)
         res.json(userOrder)
-    } catch (error) {
+    } catch (error) {        
         res.status(401)
         res.json(error)
     }

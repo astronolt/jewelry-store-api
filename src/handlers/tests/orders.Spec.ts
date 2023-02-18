@@ -36,4 +36,12 @@ describe('Orders Handler Responses', () => {
         expect(response.status).toBe(200)
     })
     
+    
+    it('Checks userOrder handler [POST] orders/user/:user_id', async () => {
+        const userId = 1
+        const response = await request
+            .post(`${ordersRoute}/user/${userId}/`)
+            .set('Authorization', `Bearer ${currentToken}`)
+        expect(response.status).toBe(200)
+    })
 })

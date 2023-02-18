@@ -6,10 +6,8 @@ import { destroyDummies } from '../../models/tests/headers'
 
 
 const userModel = new Users()
-const orderModel = new Orders()
 
 const userData = Object.keys(USERDUMMY).map((key) => USERDUMMY[key])[0]
-const orderData = Object.keys(ORDERDUMMY).map((key) => ORDERDUMMY[key])[0]
 
 describe('User Models', () => {
     

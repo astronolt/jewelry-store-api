@@ -46,7 +46,7 @@ To use this project, visit the end points:
 
 ### USERS -
 
-- `/users/create [POST]` - create a new user
+- `[POST] /users/create` - create a new user
 
   ```
   #request body sample
@@ -57,7 +57,7 @@ To use this project, visit the end points:
      "lastname": "Doe"
   }
   ```
-- `/users [POST]` - login a user
+- `[POST] /users` - login a user
 
   ```
   #request body sample
@@ -73,8 +73,7 @@ To use this project, visit the end points:
 
 ### PRODUCTS -
 
-- `/products/ [GET]` - get all products list
-- `/products/create [POST]` -add a new product to products list [protected]
+- `[POST] /products/create` -add a new product to products list [protected]
 
   ```
   #request body sample
@@ -88,23 +87,24 @@ To use this project, visit the end points:
      stock: 5,
   }
   ```
-- `/products/delete/:id [GET]` - add a product to the list [protected]
+- `[GET] /products/` - get all products list
+- `[POST] /products/:id` - get show product
+- `[POST] /products/delete/:id` - add a product to the list [protected]
 
 <br>
 <br>
 
 ### ORDERS -
 
-- `/orders/create [POST]` -add a new order [protected]
+- `[POST] /orders/create` -add a new order [protected]
 
   ```
   #request body sample
   {
      user_id: 1,
      product_id: 1,
-     quantity: 2,
-     status: 'complete',
+     status: 'active',
   }
   ```
-- `/orders?user_id=:id [GET]` - current order by user [protected]
+- `[POST] orders/user/:user_id` - current order by user [protected]
   `<br>`

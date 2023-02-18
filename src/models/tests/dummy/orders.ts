@@ -19,12 +19,12 @@ export const ORDERPRODUCTDUMMY: { [key: string]: OrderProducts } = {
     ORDERPROD1: {
         quantity: 4,
         order_id: 1,
-        product_id: 2,
+        product_id: 1,
     },
     ORDERPROD2: {
         quantity: 3,
         order_id: 1,
-        product_id: 1,
+        product_id: 3,
     },
     ORDERPROD3: {
         quantity: 5,
@@ -34,6 +34,6 @@ export const ORDERPRODUCTDUMMY: { [key: string]: OrderProducts } = {
     ORDERPROD4: {
         quantity: 2,
         order_id: 1,
-        product_id: 3,
+        product_id: 2,
     }
 }

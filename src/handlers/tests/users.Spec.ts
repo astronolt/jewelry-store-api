@@ -39,8 +39,8 @@ describe('User Handler Responses', () => {
         const loginResponse = await request
             .post(`${usersRoute}`)
             .send({
-                username: userData.username,
-                password: userData.password,
+                username: userData.username + "_test",
+                password: userData.password + "_test",
             })
         currentToken = loginResponse.body.token
 
@@ -59,11 +59,4 @@ describe('User Handler Responses', () => {
         expect(response.status).toBe(200)
     })
 
-    it('Checks userOrder handler [POST] users/:id/orders', async () => {
-        const userId = 1
-        const response = await request
-            .post(`${usersRoute}/${userId}/orders/`)
-            .set('Authorization', `Bearer ${currentToken}`)
-        expect(response.status).toBe(200)
-    })
 })
