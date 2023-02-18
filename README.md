@@ -42,7 +42,7 @@ $ npm test
 
 To use this project, visit the end points:
 `(http://localhost:3000/api)`
-`<br>`
+
 
 ### USERS -
 
