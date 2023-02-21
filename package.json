@@ -15,9 +15,7 @@
     "restart": "npx run destroy && npx run build",
 
     "test": "ENV=test && npx tsc && db-migrate reset && db-migrate up && npx jasmine && db-migrate reset",
-    "test-dev": "npx tsc watch && db-migrate --env dev up && jasmine && db-migrate db:drop dev",
-    "test-test": "npx tsc watch && db-migrate --env test up && jasmine && db-migrate db:drop test",
-
+    
     "tsc": "tsc",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "prettier": "npx prettier --config .prettierrc \"src/**/*.ts\" --write",
