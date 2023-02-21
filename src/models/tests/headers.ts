@@ -62,9 +62,8 @@ export const createOrderProductsDummy = (async (currentToken?: string) => {
    //create order_products
    for (const key in ORDERPRODUCTDUMMY) {
       await request
-         .post(`${ordersRoute}/${userId}/products`)
+         .post(`${ordersRoute}/${userId}/product`)
          .set('Authorization', `Bearer ${currentToken}`)
-         //.set('Authorization', `Bearer ${currentToken}`)
          .send(ORDERPRODUCTDUMMY[key])
    }
 })

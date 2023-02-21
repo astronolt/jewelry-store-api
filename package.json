@@ -10,8 +10,9 @@
 
     "build": "npx tsc && db-migrate --env dev up",
     "build-dummy": "npx tsc && db-migrate --env dev up && jasmine",
+    "build-dummy-start-dev": "npx tsc && db-migrate --env dev up && jasmine && npx run dev",
     "destroy": "npx tsc && db-migrate --env dev up",
-    "restart": "npm run destroy && npm run build",
+    "restart": "npx run destroy && npx run build",
 
     "test": "ENV=test && npx tsc && db-migrate reset && db-migrate up && npx jasmine && db-migrate reset",
     "test-dev": "npx tsc watch && db-migrate --env dev up && jasmine && db-migrate db:drop dev",

@@ -22,8 +22,8 @@ const create = async (req: Request, res: Response) => {
 
 
 const addProduct = async (req: Request, res: Response) => {
-    const orderId: number = parseInt(req.params.id)
-    const productId: number = parseInt(req.body.productId)
+    const orderId: number = parseInt(req.params.order_id)
+    const productId: number = parseInt(req.body.product_id)
     const quantity: number = parseInt(req.body.quantity)
 
     try {
@@ -78,7 +78,7 @@ export const ordersHandler = (routes: express.Router) => {
     routes.post('/orders/create', verifyAuthToken, create)
 
     // add product
-    routes.post('/orders/:id/products', verifyAuthToken, addProduct)
+    routes.post('/orders/:order_id/product', verifyAuthToken, addProduct)
 
     //Current Order by user
     routes.post('/orders/user/:user_id/', verifyAuthToken, byUser)

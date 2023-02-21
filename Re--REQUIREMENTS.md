@@ -1,41 +1,66 @@
-# API Requirements
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
+# DB schema for all tables
 
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
+documenting the schema for all tables in the database
 
-## API Endpoints
-#### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
 
-#### Users
-- Index [token required]
-- Show [token required]
-- Create [token required]
 
-#### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+## Users table
 
-## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+The `users` table is used to store information about the store's users.
 
-#### User
-- id
-- firstName
-- lastName
-- password
+| Column Name |  Data Type  | Description |
+| :---------: | :---------: | ----------- |
+|     id     |  interger  | PRIMARY KEY |
+|  username  | varchar(50) | UNIQUE      |
+|  password  |   varchar   |             |
+|  firstname  |   varchar   |             |
+|  lastname  |   varchar   |             |
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+<br>
+<br>
+
+## Products table
+
+The `products` table is used to store information about the store's products.
+
+| Column Name |  Data Type  | Description |
+| :---------: | :----------: | ----------- |
+|     id     |   interger   | PRIMARY KEY |
+|    name    | varchar(50) |             |
+| description | varchar(250) |             |
+|    type    | varchar(50) |             |
+|  material  | varchar(50) |             |
+|    price    |   interger   |             |
+|  category  | varchar(70) |             |
+|    stock    |   interger   |             |
+
+<br>
+<br>
+
+## Orders table
+
+The `orders` table is used to store information about the store's orders.
+
+| Column Name |  Data Type  | Description          |
+| :---------: | :---------: | -------------------- |
+|     id     |  interger  | PRIMARY KEY          |
+|   user_id   |  interger  | REFERENCES users(id) |
+|   status   | varchar(50) |                      |
+| created_at |  timestamp  | DEFAULTNOW()         |
+
+<br>
+<br>
+
+## Orders Product table
+
+The `order_products` table is used to store information between the store's orders and the products.
+
+| Column Name | Data Type | Description             |
+| :---------: | :-------: | ----------------------- |
+|     id     | interger | PRIMARY KEY             |
+|  quantity  | interger |                         |
+|  order_id  | interger | REFERENCES orders(id)   |
+| product_id | interger | REFERENCES products(id) |
+
+<br>
+<br>

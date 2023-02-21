@@ -40,71 +40,114 @@ $ npm test
 
 # How to use
 
-To use this project, visit the end points:
-`(http://localhost:3000/api)`
+To use this project, visit the end points below with the url prefix as `http://localhost:3000/api`
 
+<br>
 
-### USERS -
+### USERS
 
-- `[POST] /users/create` - create a new user
-
-  ```
-  #request body sample
-  {
-     "username": "username",
-     "username": "username",
-     "firstname": "John",
-     "lastname": "Doe"
-  }
-  ```
-- `[POST] /users` - login a user
+- `[POST] /users/create/` - create a new user
 
   ```
   #request body sample
   {
-     "username": "username",
-     "password": "password"
+    "username": "username",
+    "username": "username",
+    "firstname": "John",
+    "lastname": "Doe"
   }
   ```
-- `/users/:id [GET]` - show a user profile [protected]
+- `[POST] /users/` - login a user
+
+  ```
+  #request body sample
+  {
+    "username": "username",
+    "password": "password"
+  }
+  ```
+- [GET] `/users/:id/` - show a user profile [protected]
 
 <br>
 <br>
 
 ### PRODUCTS -
 
-- `[POST] /products/create` -add a new product to products list [protected]
+- `[POST] /products/create/` - add a new product to products list [protected]
 
   ```
   #request body sample
   {
-     name: 'Solitaire Diamond Ring',
-     description: 'A classic and timeless solitaire diamond ring',
-     type: 'ring',
-     material: '14k white gold, diamond',
-     price: 1999,
-     category: 'diamond',
-     stock: 5,
+    name: 'Solitaire Diamond Ring',
+    description: 'A classic and timeless solitaire diamond ring',
+    type: 'ring',
+    material: '14k white gold, diamond',
+    price: 1999,
+    category: 'diamond',
+    stock: 5,
   }
   ```
 - `[GET] /products/` - get all products list
-- `[POST] /products/:id` - get show product
-- `[POST] /products/delete/:id` - add a product to the list [protected]
+- `[POST] /products/:id/` - get show a product
+- `[POST] /products/delete/:id/` - remove a product from the list [protected]
 
 <br>
 <br>
 
 ### ORDERS -
 
-- `[POST] /orders/create` -add a new order [protected]
+- `[POST] /orders/create/` - create a new order [protected]
 
   ```
   #request body sample
   {
-     user_id: 1,
-     product_id: 1,
-     status: 'active',
+    user_id: 1,
+    status: 'active',
   }
   ```
-- `[POST] orders/user/:user_id` - current order by user [protected]
-  `<br>`
+- `[POST] /orders/:order_id/product/` - add product to order [protected]
+
+  ```
+  #request body sample
+  {
+    product_id: 1,
+    quantity: 3,
+  }
+  ```
+- `[POST] orders/user/:user_id/` - current order by user [protected]
+
+<br>
+<br>
+<br>
+
+# Creating the Databases and PostgreSQL User
+
+For first time run and testing, you will need to create the necessary databases and a PostgreSQL user which can access them.
+
+POSTGRES connection on `port: 5432 (default)`
+
+1. Open a terminal and log in to PostgreSQL using the command
+   ``psql -U postgres``
+   If you have set a password for the postgres user, you will be prompted to enter it.
+2. Once logged in, create the `jewelry_store_dev` and `jewelry_store_test` databases by running the following SQL commands:
+
+   ```
+   CREATE DATABASE jewelry_store_dev;
+   CREATE DATABASE jewelry_store_test;
+   ```
+3. Next, create a new user with the necessary permissions to access the databases by running the following SQL command:
+
+   ```
+   CREATE USER jeweller WITH PASSWORD 'your_password_here';
+   ```
+4. Grant the necessary permissions to the user by running the following SQL commands:
+
+   ```
+   GRANT ALL PRIVILEGES ON DATABASE jewelry_store_dev TO jeweller;
+   GRANT ALL PRIVILEGES ON DATABASE jewelry_store_test TO jeweller;
+   ```
+5. You can exit `psql` with the command `\q`.
+
+
+<br>
+<br>
